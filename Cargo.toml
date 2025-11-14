@@ -1,0 +1,22 @@
+
+[package]
+name = "autosys_template"
+version = "0.1.0"
+edition = "2021"
+
+# [lib]
+# crate-type = ["cdylib"]
+
+[dependencies]
+yew = { version = "0.21", features = ["csr"] }
+regex = "1"
+wasm-bindgen = "0.2"
+console_log = "1.0"
+log = "0.4"
+gloo = { version = "0.10", features = ["file"] }
+web-sys = { version = "0.3", features = ["HtmlInputElement","HtmlAnchorElement", "File","DataTransfer"] }
+js-sys = "0.3.82"
+
+
+
+

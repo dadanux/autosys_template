@@ -1,0 +1,88 @@
+
+mod transform;
+mod components;
+
+use components::{machine_editor::MachineEditor, preview::Preview};
+use transform::process_text;
+use gloo::{file::{File, callbacks::read_as_text}};
+use web_sys::{HtmlInputElement};
+
+
+
+
+use std::collections::HashMap;
+use yew::prelude::*;
+
+#[function_component(App)]
+pub fn app() -> Html {
+    let source_text = use_state(|| "".to_string());
+    let preview_text = use_state(|| "".to_string());
+    let replacements = use_state(|| HashMap::new());
+    let machine_list = use_state(|| vec![]);
+
+    let on_update = {
+        let source_text = source_text.clone();
+        let preview_text = preview_text.clone();
+        Callback::from(move |new_map: HashMap<String, String>| {
+            let new_preview = process_text(&source_text, &new_map);
+            preview_text.set(new_preview);
+        })
+    };
+
+ // let source_text = use_state(|| "".to_string());
+
+
+    let on_file_change = {
+        let source_text = source_text.clone();
+        Callback::from(move |event: Event| {
+            let input: HtmlInputElement = event.target_unchecked_into();
+            if let Some(files) = input.files() {
+                if let Some(file) = files.get(0) {
+                    let file = File::from(file);
+                    let _task = read_as_text(&file, {
+                        let source_text = source_text.clone();
+                        move |result| {
+                            match result {
+                                Ok(text) => 4.set(text),
+                                Err(err) => log::error!("Erreur lecture fichier: {:?}", err),
+                            }
+                        }
+                    });
+                }
+            }
+        })
+    };
+
+
+
+
+
+
+    html! {
+        <>
+            <h1>{ "Autosys" }</h1>
+            <input type="file" onchange={on_file_change} />
+            <MachineEditor machines={(*machine_list).clone()} replacements={(*replacements).clone()} on_update={on_update.clone()} />
+            
+<div class="grid grid-cols-2 gap-4">
+        <div>
+            <h3 class="text-lg font-semibold mb-2">{"Fichier original (.jil)"}</h3>
+            <textarea
+                readonly=true
+                value={(*source_text).clone()}
+                class="w-full h-96 p-2 border rounded bg-white text-sm"
+            />
+        </div>
+        <div>
+            <Preview text={(*preview_text).clone()} />
+        </div>
+</div>
+
+        </>
+    }
+}
+
+    
+fn main() {
+yew::Renderer::<App>::new().render();
+}
