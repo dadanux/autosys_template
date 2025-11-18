@@ -6,7 +6,7 @@
 # The port to serve on.
 port = 8000
 
-[[hooks]]
-stage = "pre_build"
-command = "tailwindcss"
-command_arguments = ["-i", "input.css", "-o", "app.css"]
+# [[hooks]]
+# stage = "pre_build"
+# command = "tailwindcss"
+# command_arguments = ["-i", "input.css", "-o", "app.css"]

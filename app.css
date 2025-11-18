@@ -27,6 +27,9 @@
 .container {
   width: 100%;
 }
+.mx-auto {
+  margin-inline: auto;
+}
 .block {
   display: block;
 }

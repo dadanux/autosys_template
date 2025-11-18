@@ -93,9 +93,9 @@ fn app() -> Html {
             console::log_1(&format!("🔄 Map: {:?}", &map).into())  ;
             console::log_1(&format!("✅ Modification: {} → {}", name, value).into());
             replacements.set(map.clone());
-            console::log_1(&format!("🔄 État des remplacements apres: {:?}", &replacements).into());
+            console::log_1(&format!("🔄 État des remplacements apres: {:?}", &map).into());
             let new_preview = process_text(&source_text, &map);
-            console::log_1(&new_preview.clone().into());
+            // console::log_1(&new_preview.clone().into());
             preview_text.set(new_preview);
         })
     };
@@ -128,13 +128,10 @@ fn app() -> Html {
             e.prevent_default();
     });
 
-   
-
-
     html! {
         <>
-        <div>
-            <h1>{"Éditeur JIL avec mise à jour dynamique"}</h1>
+        <div top="container" class="mx-auto p-4 space-y-4">
+            // <h1>{"Éditeur JIL avec mise à jour dynamique"}</h1>
                 <div id="wrapper">
                 <label for="file-upload">
                 <div
@@ -147,7 +144,7 @@ fn app() -> Html {
                     id="file-upload"
                     type="file"
                     accept="text/*"
-                    multiple={true}
+                    multiple={false}
                     {onchange}
                     ref={node_ref}
                 />
@@ -160,40 +157,47 @@ fn app() -> Html {
             </div>
             <button class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 "
              type="button" onclick={on_export}>{ "Exporter le fichier modifié" }</button>
-             <h3>{ "Owner:" }</h3>
+          <div class="grid grid-cols-2 gap-4">
+             <div class="margin-right-4 margin-bottom-1">
+             <h1>{ "Owners:" }</h1>
                          {    
                 for (*owners).iter().map(|name| { 
          
             html! {
-            <Input
-               
-                // input_ref={refs[refs.len() -1].clone() }
-                placeholder={"Entrez la variable de remplacement pour l'owner"}
-                name={name.clone()}
-                value={replacements.get(name).cloned().unwrap_or_default()}
-                // replacements={(*replacements).clone()}
-                on_update={on_update.clone()}
-            />
+            <div class="input-container">
+                 <label>{ name.clone() }</label>
+                 <Input
+                  placeholder={"Entrez la variable de remplacement pour l'owner"}
+                  name={name.clone()}
+                  value={replacements.get(name).cloned().unwrap_or_default()}
+                  on_update={on_update.clone()}
+                 />
+            </div>
             }
             })
             }
 
-
-            <h3>{ "Machines:" }</h3>
+</div>
+             <div>
+            <h1>{ "Machines:" }</h1>
             {    
                 for (*machines).iter().map(|name| { 
          
             html! {
-            <Input
-                placeholder={"Entrez la variable de remplacement pour la machine"}
-                name={name.clone()}
-                value={replacements.get(name).cloned().unwrap_or_default()}
-                on_update={on_update.clone()}
-            />
+            <div class="input-container">
+                 <label>{ name.clone() }</label>
+                <Input
+                    placeholder={"Entrez la variable de remplacement pour la machine"}
+                    name={name.clone()}
+                    value={replacements.get(name).cloned().unwrap_or_default()}
+                    on_update={on_update.clone()}
+                />
+            </div>
             }
             })
             }
-       
+       </div>
+       </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
                    // <h3 class="text-lg font-semibold mb-2">{"Fichier original (.jil)"}</h3>
@@ -207,7 +211,6 @@ fn app() -> Html {
                 </div>
                 <div>
                      <Preview text={(*preview_text).clone()} />
-                   //  <Preview text={(preview).clone()} />
                 </div>
             </div>
 

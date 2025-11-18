@@ -45,10 +45,10 @@ impl Component for InputComponent {
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         let placeholder = ctx.props().placeholder.clone();
-        let name = ctx.props().name.clone();
+        // let name = ctx.props().name.clone();
         html! {
-             <div class="grid auto-cols-max grid-flow-col p-1">
-            <label>{ name }</label>
+            //  <div class="grid auto-cols-max grid-flow-col p-1">
+            // <label>{ name }</label>
             <input
                 type="text"
                 class="outline-2 outline-offset-2 outline-blue-500 rounded"
@@ -56,7 +56,7 @@ impl Component for InputComponent {
                 placeholder={placeholder}
                 oninput={ctx.link().callback(|_| Msg::Hover)}
             />
-            </div>
+            // </div>
         }
     }
 }
