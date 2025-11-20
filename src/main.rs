@@ -143,7 +143,7 @@ fn app() -> Html {
                 <input
                     id="file-upload"
                     type="file"
-                    accept="text/*"
+                    accept=".jil"
                     multiple={false}
                     {onchange}
                     ref={node_ref}
